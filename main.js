@@ -33,12 +33,9 @@ function load_data(page, limit, query){
     });
 }
 
-function set_pagination(wrapper, elements, page, limits){
-}
-
 $("#search-btn").click(function(){
     search_query = $('#search-bar').val();
-    load_data(1, limit, search_query);
+    if(search_query > 0) load_data(1, limit, search_query);
 });
 
 $("#search-bar").keyup(function(){
@@ -54,5 +51,4 @@ $("#search-bar").keyup(function(){
 
 $(document).ready(function (){
     load_data(current_page, limit);
-    set_pagination();
 });
