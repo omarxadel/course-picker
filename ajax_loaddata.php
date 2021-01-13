@@ -33,10 +33,10 @@
                 else
                 {
                     $output .= '
-                    <tr>
-                        <td colspan="2" align="center">No Data Found</td>
-                    </tr>
+                        <h5 class="text-center my-4 text-secondary">No data found</h5>
                     ';
+                    echo $output;
+                    return;
                 }
                 $result->close();
             }
