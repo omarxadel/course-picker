@@ -75,7 +75,7 @@
         }
         $output .= '
         <div align="center">
-        <ul class="pagination">
+        <ul class="pagination justify-content-center">
         ';                           
         $total_links = ceil($total_data/$limit);   
         if($page != 1) {
