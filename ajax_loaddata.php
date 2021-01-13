@@ -74,7 +74,7 @@
             $result->close();
         }
         $output .= '
-        <div align="center">
+        <div>
         <ul class="pagination justify-content-center">
         ';                           
         $total_links = ceil($total_data/$limit);   
