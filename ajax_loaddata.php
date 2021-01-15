@@ -10,9 +10,9 @@
         
         if(isset($_POST['query'])){
             $query = $_POST['query'];
-            $count_res = $conn->query("SELECT COUNT(*) FROM course, professor, department WHERE course.professor_id = professor.professor_id AND course.department_id = department.department_id AND ((REPLACE(course.course_name, ' ', '') OR REPLACE(course.course_description, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(professor.professor_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(department.department_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')))");
-            $total_data = ($count_res->fetch_row())[0];
-            $search_query = "SELECT course.course_name, course.course_description, professor.professor_name, department.department_name FROM course, professor, department WHERE course.professor_id = professor.professor_id AND course.department_id = department.department_id AND ((REPLACE(course.course_name, ' ', '') OR REPLACE(course.course_description, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(professor.professor_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(department.department_name, ' ', '') LIKE REPLACE('%$query%', ' ', ''))) LIMIT {$start},{$limit}";
+            $count_res = $conn->query("SELECT COUNT(*) FROM course, professor, department WHERE course.professor_id = professor.professor_id AND course.department_id = department.department_id AND ((REPLACE(course.course_name, ' ', '') LIKE REPLACE('%$query%', ' ', '') OR REPLACE(course.course_description, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(professor.professor_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(department.department_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')))");
+            $data_count = ($count_res->fetch_row())[0];
+            $search_query = "SELECT course.course_name, course.course_description, professor.professor_name, department.department_name FROM course, professor, department WHERE course.professor_id = professor.professor_id AND course.department_id = department.department_id AND ((REPLACE(course.course_name, ' ', '') LIKE REPLACE('%$query%', ' ', '') OR REPLACE(course.course_description, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(professor.professor_name, ' ', '') LIKE REPLACE('%$query%', ' ', '')) OR (REPLACE(department.department_name, ' ', '') LIKE REPLACE('%$query%', ' ', ''))) LIMIT {$start},{$limit}";
             if ($result = $conn->query($search_query)) {
                 if( $result->num_rows > 0)
                 {   
@@ -43,7 +43,7 @@
         }
         else{
             $count_res = $conn->query("SELECT COUNT(*) FROM course");
-            $total_data = ($count_res->fetch_row())[0];
+            $data_count = ($count_res->fetch_row())[0];
     
             if ($result = $conn->query("SELECT course.course_name, course.course_description, professor.professor_name, department.department_name FROM course, professor, department WHERE course.professor_id = professor.professor_id AND course.department_id = department.department_id LIMIT {$start}, {$limit}")) {
                 if( $result->num_rows > 0)
@@ -77,12 +77,12 @@
         <div>
         <ul class="pagination justify-content-center">
         ';                           
-        $total_links = ceil($total_data/$limit);   
+        $pagination_numbers = ceil($data_count/$limit);   
         if($page != 1) {
             $prev_page = $page-1;
             $output .= '<li class="page-item"><a onclick="load_data('.$prev_page.', '.$limit.', \''.$query.'\')" class="page-link" href="#">Previous</a></li>';
         }
-        for ($i = 1 ; $i <= $total_links ; $i++){
+        for ($i = 1 ; $i <= $pagination_numbers ; $i++){
             if($page == $i){
                 $output .= '<li class="page-item active">
                 <a class="page-link" href="#">'.$i.'</a>
@@ -93,7 +93,7 @@
                 $output .= '<li class="page-item"><a onclick="load_data('.$i.', '.$limit.', \''.$query.'\')" class="page-link" href="#">'.$i.'</a></li>';
             }
         }
-        if($page != $total_links) {
+        if($page != $pagination_numbers) {
             $page++;
             $output .= '<li class="page-item"><a onclick="load_data('.$page.', '.$limit.', \''.$query.'\')" class="page-link" href="#">Next</a></li>';
         }
